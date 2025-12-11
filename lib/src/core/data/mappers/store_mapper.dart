@@ -15,7 +15,7 @@ class StoreMapper {
       website: dto.website,
       acceptedPaymentMethods: dto.acceptedPaymentMethods,
       averageRating: dto.averageRating,
-      reviewCount: dto.reviewCount,
+      reviewCount: dto.reviewCount ?? 0,
       isFavorite: dto.isFavorite,
       createdAt: DateTime.parse(dto.createdAt),
     );
