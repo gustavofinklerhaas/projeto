@@ -173,7 +173,7 @@ class DailyGoalCard extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: progressColor?.withOpacity(0.1),
+                  color: (progressColor ?? Colors.grey).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: progressColor ?? Colors.grey,

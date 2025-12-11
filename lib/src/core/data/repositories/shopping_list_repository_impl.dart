@@ -248,7 +248,7 @@ class ShoppingItemRepositoryImpl implements ShoppingItemRepository {
       final newItem = ShoppingItem(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         name: name,
-        quantity: quantity,
+        quantity: quantity.toDouble(),
         categoryId: categoryId,
         createdAt: DateTime.now(),
       );
@@ -329,10 +329,14 @@ class ShoppingItemRepositoryImpl implements ShoppingItemRepository {
       final grouped = <String, List<ShoppingItem>>{};
 
       for (final item in items) {
-        if (!grouped.containsKey(item.categoryId)) {
-          grouped[item.categoryId] = [];
+        // Pula items sem categoryId
+        final categoryId = item.categoryId;
+        if (categoryId == null) continue;
+        
+        if (!grouped.containsKey(categoryId)) {
+          grouped[categoryId] = [];
         }
-        grouped[item.categoryId]!.add(item);
+        grouped[categoryId]!.add(item);
       }
 
       return grouped;
