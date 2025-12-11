@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E7D32;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1B5E20;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="96" cy="96" r="96" fill="url(#grad1)"/>
+  
+  <!-- Shopping Bag Shape -->
+  <g transform="translate(96, 96)">
+    <!-- Bag Body -->
+    <path d="M -35 -20 L -35 30 Q -35 45 -20 45 L 20 45 Q 35 45 35 30 L 35 -20 Z" 
+          fill="white" stroke="none"/>
+    
+    <!-- Bag Handle -->
+    <path d="M -25 -20 Q -25 -40 0 -45 Q 25 -40 25 -20" 
+          fill="none" stroke="white" stroke-width="5" stroke-linecap="round"/>
+    
+    <!-- Shopping Items (lines inside) -->
+    <line x1="-25" y1="0" x2="25" y2="0" stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-20" y1="15" x2="20" y2="15" stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-15" y1="30" x2="15" y2="30" stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

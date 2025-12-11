@@ -1,0 +1,30 @@
+# App Icon Placeholder
+# Este arquivo é um placeholder. Substitua por um arquivo PNG real
+
+## Sobre o Ícone
+
+O ícone da aplicação "ShoppingList" deve ser:
+- **Formato**: PNG
+- **Tamanho**: 512x512px (mínimo)
+- **Transparência**: Suportada
+- **Design**: Ícone de sacola/carrinho de compras com paleta de cores verde e branco
+
+## Como Adicionar o Ícone
+
+1. Substitua este arquivo por `app_icon.png` (512x512px)
+2. Execute:
+```bash
+flutter pub add dev:flutter_launcher_icons
+flutter pub run flutter_launcher_icons
+```
+
+## Estrutura dos Ícones Gerados
+
+Após executar o comando acima, os ícones serão gerados automaticamente em:
+- Android: `android/app/src/main/res/mipmap-*/ic_launcher.png`
+- iOS: `ios/Runner/Assets.xcassets/AppIcon.appiconset/`
+
+## Referências
+- Material Design Icons: https://fonts.google.com/icons
+- Icon.Kitchen: https://icon.kitchen/
+- AppIcon.co: https://www.appicon.co/
