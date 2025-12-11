@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'src/core/theme/app_theme.dart';
 import 'src/core/data/preferences_service.dart';
+import 'src/core/di/service_locator.dart';
 import 'src/features/splash/splash_screen.dart';
 import 'src/features/onboarding/onboarding_screen.dart';
 import 'src/features/terms/terms_screen.dart';
@@ -13,6 +14,9 @@ void main() async {
   // Inicializa o serviço de preferências
   final preferencesService = PreferencesService();
   await preferencesService.init();
+  
+  // Configura a injeção de dependência
+  ServiceLocator.setup();
   
   runApp(const MyApp());
 }
