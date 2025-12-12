@@ -4,6 +4,7 @@ import 'package:shopping_list/src/features/store/presentation/widgets/store_list
 import 'package:shopping_list/src/features/store/presentation/dialogs/store_actions_dialog.dart';
 import 'package:shopping_list/src/features/store/presentation/dialogs/store_remove_confirmation_dialog.dart';
 import 'package:shopping_list/src/features/store/presentation/dialogs/store_form_dialog.dart';
+import 'package:shopping_list/src/features/store/presentation/dialogs/swipe_remove_confirmation_dialog.dart';
 
 /// Página de listagem de lojas
 /// 
@@ -210,6 +211,11 @@ class _StoresPageState extends State<StoresPage> {
       store: store,
       onConfirm: () => _confirmRemoveStore(store),
     );
+  }
+
+  /// Handler para remoção de loja por swipe
+  void _handleSwipeRemoveStore(Store store) {
+    _confirmRemoveStore(store);
   }
 
   /// Confirma e executa a remoção de uma loja
@@ -454,14 +460,61 @@ class _StoresPageState extends State<StoresPage> {
       itemCount: filteredStores.length,
       itemBuilder: (context, index) {
         final store = filteredStores[index];
-        return StoreListItem(
-          store: store,
-          onTap: () {
-            _showStoreActionsDialog(store);
+        return Dismissible(
+          key: ValueKey(store.id),
+          direction: DismissDirection.endToStart,
+          // Background durante swipe
+          background: Container(
+            color: Colors.red.withOpacity(0.8),
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.only(right: 16),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(Icons.delete, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  'Remover',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          // Confirmação antes de remover
+          confirmDismiss: (direction) async {
+            if (direction == DismissDirection.endToStart) {
+              // Abre diálogo de confirmação
+              final confirmed = await SwipeRemoveConfirmationDialog.show(
+                context,
+                itemName: store.name,
+                onConfirm: () {
+                  // Callback é executado antes de retornar
+                },
+              );
+              
+              if (confirmed == true) {
+                // Usuário confirmou a remoção
+                _handleSwipeRemoveStore(store);
+              }
+              
+              return confirmed ?? false;
+            }
+            return false;
           },
-          onEditTap: () {
-            _handleEditStore(store);
+          // Ação ao confirmar remoção
+          onDismissed: (direction) {
+            // A remoção já foi tratada em confirmDismiss
+            // Este callback é apenas para limpeza se necessário
           },
+          child: StoreListItem(
+            store: store,
+            onTap: () {
+              _showStoreActionsDialog(store);
+            },
+            onEditTap: () {
+              _handleEditStore(store);
+            },
+          ),
         );
       },
     );
