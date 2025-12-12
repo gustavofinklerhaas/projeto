@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/src/core/domain/entities/store.dart';
 import 'package:shopping_list/src/features/store/presentation/widgets/store_list_item.dart';
+import 'package:shopping_list/src/features/store/presentation/dialogs/store_actions_dialog.dart';
+import 'package:shopping_list/src/features/store/presentation/dialogs/store_remove_confirmation_dialog.dart';
 
 /// Página de listagem de lojas
 /// 
@@ -142,6 +144,64 @@ class _StoresPageState extends State<StoresPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(_errorMessage ?? ''),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  /// Abre o diálogo de ações para uma loja selecionada
+  void _showStoreActionsDialog(Store store) {
+    StoreActionsDialog.show(
+      context,
+      store: store,
+      onEdit: () => _handleEditStore(store),
+      onRemove: () => _handleRemoveStore(store),
+    );
+  }
+
+  /// Handler para edição de loja
+  /// Em Prompt 10, este irá abrir um formulário de edição
+  void _handleEditStore(Store store) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Editar: ${store.name}'),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.blue,
+      ),
+    );
+    // TODO: Prompt 10 - Abrir formulário de edição
+  }
+
+  /// Handler para remoção de loja
+  /// Abre diálogo de confirmação
+  void _handleRemoveStore(Store store) {
+    StoreRemoveConfirmationDialog.show(
+      context,
+      store: store,
+      onConfirm: () => _confirmRemoveStore(store),
+    );
+  }
+
+  /// Confirma e executa a remoção de uma loja
+  void _confirmRemoveStore(Store store) {
+    try {
+      setState(() {
+        _stores.removeWhere((s) => s.id == store.id);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${store.name} removida com sucesso'),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+      // TODO: Em produção, persistir no DAO
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao remover loja: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -368,13 +428,7 @@ class _StoresPageState extends State<StoresPage> {
         return StoreListItem(
           store: store,
           onTap: () {
-            // Será implementado no Prompt 9 (seleção e diálogo)
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Selecionado: ${store.name}'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
+            _showStoreActionsDialog(store);
           },
         );
       },
