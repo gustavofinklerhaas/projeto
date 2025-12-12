@@ -5,11 +5,13 @@ import 'package:shopping_list/src/core/domain/entities/store.dart';
 class StoreListItem extends StatelessWidget {
   final Store store;
   final VoidCallback onTap;
+  final VoidCallback? onEditTap; // Novo callback para edição
 
   const StoreListItem({
     Key? key,
     required this.store,
     required this.onTap,
+    this.onEditTap,
   }) : super(key: key);
 
   /// Formata rating com uma casa decimal
@@ -38,26 +40,47 @@ class StoreListItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Nome e status favorito
+              // Nome, status favorito e ícone de edição
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      store.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            store.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (store.isFavorite)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                              size: 20,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                  if (store.isFavorite)
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: 20,
+                  // Ícone de edição
+                  if (onEditTap != null)
+                    IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.blue),
+                      onPressed: onEditTap,
+                      tooltip: 'Editar loja',
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        minWidth: 40,
+                        minHeight: 40,
+                      ),
                     ),
                 ],
               ),

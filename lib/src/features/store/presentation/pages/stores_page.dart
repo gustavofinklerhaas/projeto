@@ -3,6 +3,7 @@ import 'package:shopping_list/src/core/domain/entities/store.dart';
 import 'package:shopping_list/src/features/store/presentation/widgets/store_list_item.dart';
 import 'package:shopping_list/src/features/store/presentation/dialogs/store_actions_dialog.dart';
 import 'package:shopping_list/src/features/store/presentation/dialogs/store_remove_confirmation_dialog.dart';
+import 'package:shopping_list/src/features/store/presentation/dialogs/store_form_dialog.dart';
 
 /// Página de listagem de lojas
 /// 
@@ -161,16 +162,44 @@ class _StoresPageState extends State<StoresPage> {
   }
 
   /// Handler para edição de loja
-  /// Em Prompt 10, este irá abrir um formulário de edição
+  /// Abre formulário de edição pré-preenchido
   void _handleEditStore(Store store) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Editar: ${store.name}'),
-        duration: const Duration(seconds: 2),
-        backgroundColor: Colors.blue,
-      ),
+    StoreFormDialog.show(
+      context,
+      store: store,
+      onSave: (updatedStore) {
+        _confirmEditStore(updatedStore);
+      },
     );
-    // TODO: Prompt 10 - Abrir formulário de edição
+  }
+
+  /// Confirma e executa a edição de uma loja
+  void _confirmEditStore(Store updatedStore) {
+    try {
+      setState(() {
+        // Encontra e atualiza a loja na lista
+        final index = _stores.indexWhere((s) => s.id == updatedStore.id);
+        if (index != -1) {
+          _stores[index] = updatedStore;
+        }
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${updatedStore.name} atualizada com sucesso'),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+      // TODO: Em produção, persistir no DAO
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao atualizar loja: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   /// Handler para remoção de loja
@@ -429,6 +458,9 @@ class _StoresPageState extends State<StoresPage> {
           store: store,
           onTap: () {
             _showStoreActionsDialog(store);
+          },
+          onEditTap: () {
+            _handleEditStore(store);
           },
         );
       },
