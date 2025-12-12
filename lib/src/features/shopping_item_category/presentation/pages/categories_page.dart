@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/src/features/shopping_item_category/data/di/categories_provider.dart';
-import 'package:flutter_application_1/src/features/shopping_item_category/domain/entities/shopping_item_category.dart';
+import 'package:flutter_application_1/src/features/shopping_item_category/domain/entities/shopping_item_category_entity.dart';
 import 'package:flutter_application_1/src/features/shopping_item_category/presentation/controller/categories_controller.dart';
 import 'package:uuid/uuid.dart';
 

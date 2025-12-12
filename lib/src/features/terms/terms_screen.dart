@@ -196,7 +196,7 @@ LEIA CUIDADOSAMENTE E ACEITE PARA CONTINUAR
     super.dispose();
   }
 
-  bool get _canContinue =>
+  // bool get _canContinue =>
       _termsReadCount >= AppConstants.minimumTermsReadCount &&
       _termsAccepted == false;
 

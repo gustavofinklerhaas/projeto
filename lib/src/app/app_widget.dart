@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/src/app/routes.dart';
-import 'package:flutter_application_1/src/features/user_preferences/data/datasources/user_preferences_local_data_source.dart';
-import 'package:flutter_application_1/src/features/user_preferences/data/repositories/user_preferences_repository_impl.dart';
-import 'package:flutter_application_1/src/features/user_preferences/presentation/controller/theme_controller.dart';
+import 'package:flutter_application_1/src/core/theme/app_theme.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
@@ -13,41 +11,32 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  late ThemeController _themeController;
-  bool _isInitialized = false;
-
   @override
   void initState() {
     super.initState();
-    _initializeThemeController();
   }
 
-  void _initializeThemeController() {
-    Future.microtask(() async {
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        final dataSource = UserPreferencesLocalDataSourceImpl(prefs);
-        final repository = UserPreferencesRepositoryImpl(dataSource);
-
-        _themeController = ThemeController(repository: repository);
-        await _themeController.loadPreferences();
-
-        if (mounted) {
-          setState(() {
-            _isInitialized = true;
-          });
-        }
-      } catch (e) {
-        if (mounted) {
-          setState(() {
-            _isInitialized = true;
-          });
-        }
-      }
-    });
+  @override
+  void dispose() {
+    super.dispose();
   }
 
-  ThemeData _buildLightTheme() {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Shopping List',
+      initialRoute: Routes.splash,
+      routes: Routes.getRoutes(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+/* Tema antigo (removido por não estar em uso)
+ThemeData _buildLightTheme() {
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(
         seedColor: const Color(0xFF6200EE),

@@ -16,7 +16,6 @@ class _ConsentScreenState extends State<ConsentScreen> {
   final PreferencesService _preferencesService = PreferencesService();
   bool _analyticConsent = false;
   bool _marketingConsent = false;
-  bool _allConsentsGiven = false;
 
   @override
   void initState() {

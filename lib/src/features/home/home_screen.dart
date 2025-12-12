@@ -22,9 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final PreferencesService _preferencesService = PreferencesService();
   String _username = 'Usuário';
   int _termsReadCount = 0;
-  bool _analyticsConsent = false;
-  bool _showUndoRevokeConsent = false;
-  late DateTime _consentRevokedTime;
   Timer? _revokeTimer;
 
   @override
@@ -113,8 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   // Mostrar snackbar com opção desfazer por 5 segundos
                   setState(() {
-                    _showUndoRevokeConsent = true;
-                    _consentRevokedTime = DateTime.now();
                   });
 
                   // Flag para controlar se ainda está esperando a navegação
@@ -135,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           await _preferencesService.setConsentGiven();
                           if (mounted) {
                             setState(() {
-                              _showUndoRevokeConsent = false;
                             });
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
